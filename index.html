@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <title>Flicker Parade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="app/assets/app.css" rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700|Karma:400,700" rel="stylesheet"
+          type="text/css"/>
+    <link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+</head>
+
+<body ng-app="formFlickr">
+
+<header>
+    <h1>Flicker Parade</h1>
+</header>
+<section class="row" ng-controller="FlickrController">
+    <div ng-show="showLoader" class="loaderCarrier">
+        <div class="loader"></div>
+    </div>
+    <article class="col-md-12">
+        <div class="app-container">
+            <fieldset class="app-fieldset">
+                <legend class="app-legend">
+                    My Version
+                </legend>
+
+                <form name="form" class="validate-form">
+                    <input id="searchCriteria"
+                           ng-model="searchCriteria.tags"
+                           ng-target="form.tags"
+                           name="tags"
+                           type="text"
+                           title="required input"
+                           placeholder="Enter key words (tags) separated by a comma."
+                           required/>
+                    <br/>
+                    <input type="button" class="btn btn-default" ng-click="resetForm(form);" value="Reset"/>
+                    <button type="submit" class="btn btn-primary"
+                            ng-click="search(searchCriteria);document.getElementsByName('tags').focus();">
+                        Search Flicker
+                    </button>
+                </form>
+                <button class="btn btn-primary" ng-click="showLikedPics()">
+                    See Pics Liked
+                </button>
+            </fieldset>
+            <div id="map"></div>
+
+        </div>
+        <div id="message"></div>
+        <div id="images" class="app-container">
+            <h3 ng-show="images.length == 0">
+                Sorry, could not find any images!
+            </h3>
+            <figure class="added-fig" ng-repeat="i in images">
+                <input ng-click="liked(i)" ng-checked="i.checked" class="toggle-heart" id="{{'toggle-heart'+$index}}"
+                       type="checkbox"/>
+                <label for="{{'toggle-heart'+$index}}">&#x2665;</label>
+                <img class="added-img" src="{{i.url}}"/>
+                <figcaption class="added-cap">{{i.title}}</figcaption>
+            </figure>
+        </div>
+    </article>
+    <div class="container paginate">
+        <pagination
+                ng-model="currentPage"
+                total-items="total"
+                max-size="maxSize"
+                boundary-links="true">
+        </pagination>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+<script src="https://cdn.rawgit.com/abdmob/x2js/master/xml2json.js"></script>
+<script data-require="ui-bootstrap@*" data-semver="0.12.1"
+        src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
+<script type="text/javascript"
+        src="http://maps.google.com/maps/api/js?key=AIzaSyDwTbSoCqTlDiduGWH54vt-biXe2AY3DiM&libraries=geometry,places,language,drawing&amp"></script>
+<script src="app/js/application.js"></script>
+</body>
+</html>
